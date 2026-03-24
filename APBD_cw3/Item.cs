@@ -11,8 +11,4 @@ public abstract class Item
     {
         Id = _idGen++; Name = name;
     }
-    
-    public Item()
-    {
-    }
 }

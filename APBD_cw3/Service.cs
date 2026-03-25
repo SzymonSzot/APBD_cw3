@@ -60,7 +60,7 @@ public class Service
         User tmpUser = GetUserById(userId);
         Item tmpItem = GetItemById(itemId);
 
-        if (tmpItem.Equals(null) || tmpUser.Equals(null))
+        if (tmpItem == null || tmpUser == null)
         {
             Console.WriteLine($"Wrong parameters: {userId},  {itemId}");
             return;
@@ -86,7 +86,7 @@ public class Service
     public void EndRenting(int rentingId)
     {
         Renting tmpRenting = GetRentingById(rentingId);
-        if (tmpRenting.Equals(null))
+        if (tmpRenting == null)
         {
             Console.WriteLine($"Renting {rentingId} not found");
             return;

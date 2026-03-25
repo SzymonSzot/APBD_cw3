@@ -41,6 +41,18 @@ public class Service
         }
         return null;
     }
+
+    public Renting GetRentingById(int id)
+    {
+        foreach (var item in Rentings)
+        {
+            if (item.Id == id)
+            {
+                return item;
+            }
+        }
+        return null;
+    }
     
     
     public void AddRenting(int userId, int itemId )
@@ -70,5 +82,19 @@ public class Service
         tmpItem.IsAvailable = false;
         tmpUser.RentedDevices++;
     }
-    public void Renting(Renting renting){}
+
+    public void EndRenting(int rentingId)
+    {
+        Renting tmpRenting = GetRentingById(rentingId);
+        if (tmpRenting.Equals(null))
+        {
+            Console.WriteLine($"Renting {rentingId} not found");
+            return;
+        }
+
+        tmpRenting.RentedItem.IsAvailable = true;
+        tmpRenting.RentingUser.RentedDevices--;
+        Rentings.Remove(tmpRenting);
+    }
+    
 }

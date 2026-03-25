@@ -97,4 +97,49 @@ public class Service
         Rentings.Remove(tmpRenting);
     }
     
+    public void ShowAllEquipment()
+    {
+        Console.WriteLine("--- All Equipment ---");
+        foreach (var item in Items)
+        {
+            string status = item.IsAvailable ? "Available" : "Rented";
+            Console.WriteLine($"ID: {item.Id} {item.Name} | Status: {status}");
+        }
+    }
+    
+    public void ShowAllRentedEquipment()
+    {
+        Console.WriteLine("--- Currently Rented Items ---");
+        foreach (var renting in Rentings)
+        {
+            Console.WriteLine($"Item ID: {renting.RentedItem.Id} | Rented by User: {renting.RentingUser.Id} | Due: {renting.ReturnDate}");
+        }
+    
+        if (Rentings.Count == 0)
+            Console.WriteLine("No items are currently rented.");
+    }
+    
+    public void ShowEquipmentByUser(int userId)
+    {
+        User user = GetUserById(userId);
+        if (user == null)
+        {
+            Console.WriteLine($"User with ID {userId} not found.");
+            return;
+        }
+
+        Console.WriteLine($"--- Equipment rented by User {userId} ---");
+        bool found = false;
+        foreach (var renting in Rentings)
+        {
+            if (renting.RentingUser.Id == userId)
+            {
+                Console.WriteLine($"Item ID: {renting.RentedItem.Id} | Return Date: {renting.ReturnDate}");
+                found = true;
+            }
+        }
+
+        if (!found)
+            Console.WriteLine("This user has no active rentals.");
+    }
 }

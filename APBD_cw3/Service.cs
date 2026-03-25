@@ -55,7 +55,7 @@ public class Service
     }
     
     
-    public void AddRenting(int userId, int itemId )
+    public void AddRenting(int userId, int itemId , DateTime returnDate)
     {
         User tmpUser = GetUserById(userId);
         Item tmpItem = GetItemById(itemId);
@@ -78,7 +78,7 @@ public class Service
             return;
         }
 
-        Rentings.AddLast(new Renting(tmpItem, tmpUser, DateTime.Now, DateTime.Now.AddMonths(1)));
+        Rentings.AddLast(new Renting(tmpItem, tmpUser, DateTime.Now, returnDate));
         tmpItem.IsAvailable = false;
         tmpUser.RentedDevices++;
     }
@@ -94,7 +94,10 @@ public class Service
 
         tmpRenting.RentedItem.IsAvailable = true;
         tmpRenting.RentingUser.RentedDevices--;
-        Rentings.Remove(tmpRenting);
+        tmpRenting.RealReturnDate = DateTime.Now;
+        
+        Console.WriteLine($"Renting {rentingId} has been rented");
+        Console.WriteLine($"Overdue penalty {tmpRenting.Penalty()}");
     }
     
     public void ShowAllEquipment()

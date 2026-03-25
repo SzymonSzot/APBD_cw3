@@ -62,13 +62,13 @@ public class Service
 
         if (tmpItem == null || tmpUser == null)
         {
-            Console.WriteLine($"Wrong parameters: {userId},  {itemId}");
+            Console.WriteLine($"Wrong parameters: user {userId},  item {itemId}");
             return;
         }
 
         if (!tmpItem.IsAvailable)
         {
-            Console.WriteLine($"item unavailable: {itemId}");
+            Console.WriteLine($"item unavailable: id {itemId}");
             return;
         }
 
@@ -96,7 +96,7 @@ public class Service
         tmpRenting.RentingUser.RentedDevices--;
         tmpRenting.RealReturnDate = DateTime.Now;
         
-        Console.WriteLine($"Renting {rentingId} has been rented");
+        Console.WriteLine($"Renting {rentingId} has been returned");
         Console.WriteLine($"Overdue penalty {tmpRenting.Penalty()}");
     }
     
@@ -114,10 +114,14 @@ public class Service
     {
         Console.WriteLine("--- Currently Rented Items ---");
         foreach (var renting in Rentings)
-        {
-            Console.WriteLine($"Item ID: {renting.RentedItem.Id} | Rented by User: {renting.RentingUser.Id} | Due: {renting.ReturnDate}");
-        }
-    
+            if (renting.RealReturnDate == null)
+            {
+                {
+                    Console.WriteLine(
+                        $"Item ID: {renting.RentedItem.Id} | Rented by User: {renting.RentingUser.Id} | Due: {renting.ReturnDate}");
+                }
+            }
+
         if (Rentings.Count == 0)
             Console.WriteLine("No items are currently rented.");
     }
@@ -137,8 +141,11 @@ public class Service
         {
             if (renting.RentingUser.Id == userId)
             {
-                Console.WriteLine($"Item ID: {renting.RentedItem.Id} | Return Date: {renting.ReturnDate}");
-                found = true;
+                if (!(renting.RealReturnDate == null))
+                {
+                    Console.WriteLine($"Item ID: {renting.RentedItem.Id} | Return Date: {renting.ReturnDate}");
+                    found = true;
+                }
             }
         }
 
